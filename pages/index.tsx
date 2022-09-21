@@ -1,14 +1,19 @@
 import type { NextPage } from 'next'
-
+import { useSession,signIn,signOut } from 'next-auth/react'
 
 const Home: NextPage = () => {
-  return (
+  const { data: session } = useSession()
+  if(session) {
+    return (
     <>
-    <h1 className="text-3xl font-bold underline">
-      Hello world!
-    </h1>
-    </>
-  )
+      <p>Signed in as {session?.user?.email} </p>
+      <button onClick={() => signOut()}>Sign out</button>
+    </>)
+  }
+  return <>
+    Not signed in <br/>
+    <button onClick={() => signIn()}>Sign in</button>
+  </>
 }
 
 export default Home
